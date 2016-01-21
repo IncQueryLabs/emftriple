@@ -36,9 +36,10 @@ class Serializer {
 	}
 
 	private def serialize(EAttribute attribute, EObject eObject, Model graph, ValueFactory factory) {
-		if (attribute.derived || attribute.transient || !eObject.eIsSet(attribute)) return null
+		if (attribute.derived || attribute.transient) return null
 		
 		val value = eObject.eGet(attribute)
+		if (value == null) return null
 
 		if (attribute.many)
 			(value as Collection<Object>).forEach[graph.add(eObject, attribute, it, factory)]
